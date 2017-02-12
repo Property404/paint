@@ -66,3 +66,30 @@ function initWebGL() {
 }
 initWebGL();
 
+var vertexBufferObject = gl.createBuffer();
+
+gl.bindBuffer(gl.ARRAY_BUFFER, vertexBufferObject);
+var positionAttributeLocation = 
+	gl.getAttribLocation(program, 'vertPosition');
+var colorAttributeLocation = gl.getAttribLocation(program, 'vertColor');
+
+// Tell WebGL how to read the raw data
+gl.vertexAttribPointer(
+	positionAttributeLocation,
+	2,//Number of elemeents per attribute
+	gl.FLOAT,//Types of elements
+	gl.FALSE,//Always false
+	5*Float32Array.BYTES_PER_ELEMENT,//Size of an individual vertex
+	0//Offset
+);
+gl.vertexAttribPointer(
+	colorAttributeLocation,
+	3,
+	gl.FLOAT,
+	gl.FALSE,
+	5 * Float32Array.BYTES_PER_ELEMENT,
+	2 * Float32Array.BYTES_PER_ELEMENT
+);
+gl.enableVertexAttribArray(positionAttributeLocation);
+gl.enableVertexAttribArray(colorAttributeLocation);
+gl.useProgram(program);
