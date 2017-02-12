@@ -1,33 +1,3 @@
-class Color{
-	constructor(r, g, b){
-		this.red = r;
-		this.green = g;
-		this.blue = b;
-	}
-}
-class Shape{
-	constructor(color, filled){
-		this.color = color;
-		//Assert filled is exactly true or exactly false
-		this.filled= filled===true?true:filled===false?false:(console.log("NOT A VALID FILLED CONDITION"), false);
-	}
-
-	materialize(vertices, shape, to, from){
-		gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexBufferObject);
-		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-	}
-}
-class Rectangle extends Shape{
-	constructor(x1, y1, x2, y2, color, filled){
-		this.origin_x = x1;
-		this.origin_y = y1;
-		this.final_x = x2;
-		this.final_y = y2;
-		super(color,filled);
-	}
-	draw(){
-		
-	}
 var triangleVertices = [];
 
 var triangleVertexBufferObject = gl.createBuffer();
@@ -75,6 +45,58 @@ gl.enableVertexAttribArray(colorAttributeLocation);
 // Public functions
 gl.useProgram(program);
 
+
+class Point{
+	constructor(x,y){
+		this.x = x;
+		this.y = y;
+	}
+}
+class Color{
+	constructor(r, g, b){
+		this.red = r;
+		this.green = g;
+		this.blue = b;
+	}
+}
+class Shape{
+	constructor(color, filled){
+		this.color = color;
+		//Assert filled is exactly true or exactly false
+		this.filled= filled===true?true:filled===false?false:(console.log("NOT A VALID FILLED CONDITION"), false);
+	}
+
+	materialize(points/* Does NOT include color*/, gl_shape){
+		/* Complete vertices - Includes color */
+		var cvertices = [];
+		for (let point of points){
+			cvertices.push(point.x,point.y, this.color.red, this.color.green, this.color.blue);
+		}
+		
+		console.log(cvertices);
+		/* Do all that WebGL magic */
+		gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexBufferObject);
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(cvertices), gl.STATIC_DRAW);
+
+		/* Calculate how to draw the shape*/
+		var vcount=Math.floor(points.length);
+		console.log("Vcount: " + vcount);
+		gl.drawArrays(gl_shape,0, vcount);
+
+	}
+}
+class Rectangle extends Shape{
+	constructor(x1, y1, x2, y2, color, filled){
+		super(color,filled);
+		this.x1= x1;
+		this.y1= y1;
+		this.x2= x2;
+		this.y2= y2;
+	}
+	draw(){
+		this.materialize([new Point(this.x1,this.y1),new Point(this.x1,this.y2), new Point(this.x2,this.y2), new Point(this.x2,this.y1)], gl.LINE_LOOP);
+	}
+}
 function writePoint(x, y) {
     addVertex(x, y);
     bloo = addcount; //Math.floor(triangleVertices.length/4) - 1
