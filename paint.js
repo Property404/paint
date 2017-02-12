@@ -1,3 +1,33 @@
+class Color{
+	constructor(r, g, b){
+		this.red = r;
+		this.green = g;
+		this.blue = b;
+	}
+}
+class Shape{
+	constructor(color, filled){
+		this.color = color;
+		//Assert filled is exactly true or exactly false
+		this.filled= filled===true?true:filled===false?false:(console.log("NOT A VALID FILLED CONDITION"), false);
+	}
+
+	materialize(vertices, shape, to, from){
+		gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexBufferObject);
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+	}
+}
+class Rectangle extends Shape{
+	constructor(x1, y1, x2, y2, color, filled){
+		this.origin_x = x1;
+		this.origin_y = y1;
+		this.final_x = x2;
+		this.final_y = y2;
+		super(color,filled);
+	}
+	draw(){
+		
+	}
 var triangleVertices = [];
 
 var triangleVertexBufferObject = gl.createBuffer();
