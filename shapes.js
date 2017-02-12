@@ -6,7 +6,7 @@ class Color {
     }
 }
 class Shape {
-    constructor(x1, y1, x2, y2, color, filled) {
+    constructor(x1, y1, x2, y2, color, filled, extraparam = false) {
         this.x1 = x1;
         this.x2 = x2;
         this.y1 = y1;
@@ -35,8 +35,31 @@ class Shape {
 
     }
 }
+class Triangle extends Shape{
+	constructor(x1, y1,x2, y2, color, filled, third_point){
+		super(x1, y1, x2,y2, color, filled);
+		this.x3 = third_point[0];
+		this.y3 = third_point[1];
+	}
+	draw(){
+		let x1 = this.x1;
+		let x2 = this.x2;
+		let x3 = this.x3;
+		let y1 = this.y1;
+		let y2 = this.y2;
+		let y3 = this.y3;
+		this.materialize([
+			[x1, y1],
+			[x2, y2],
+			[x3, y3]],
+			this.filled?gl.TRIANGLE_FAN:gl.LINE_LOOP
+		);
+	}
+}
+
+
 class Line extends Shape {
-    constructor(x1, y1, x2, y2, color, dummy) {
+    constructor(x1, y1, x2, y2, color, dummy, dummy2) {
         super(x1, y1, x2, y2, color, false);
     }
     draw() {
@@ -51,7 +74,7 @@ class Line extends Shape {
     }
 }
 class Rectangle extends Shape {
-    constructor(x1, y1, x2, y2, color, filled) {
+    constructor(x1, y1, x2, y2, color, filled, dummy) {
         super(x1, y1, x2, y2, color, filled);
     }
     draw() {
