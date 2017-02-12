@@ -13,10 +13,10 @@
 	<script src="./paint.js">
 	</script>
 	<script>
-		rect = new Rectangle(0,0,.5,.5, new Color(0,0,1),true);
-		line = new Line(-.2,0,.3,-.1, new Color(1,0,0), true);
-		line.draw();	
-		
+		redrawCanvas();
+		rect = new current.shape(-1,-1,-.8,-.8, new Color(0,0,1),true);
+		shapes.push(rect);
+		redrawCanvas();
 	</script>
 	</body>
 </html>
