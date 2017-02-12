@@ -45,12 +45,11 @@ canvas.addEventListener('click', function(e){
 /* Look for moves if drawing */
 canvas.addEventListener("mousemove", function(e){
 	if(current.draw_mode){
-		console.log(e.clientX + "," + e.clientY);
-		/*
+		x = (e.offsetX / canvas.clientWidth) * 2 -1
+		y = (1 - (e.offsetY / canvas.clientHeight))*2 - 1
 		redrawCanvas();
 		(new current.shape(current.origin_x, current.origin_y,
-			(e.clientX)/(bc.right-bc.left), (e.clientY)/(-bc.bottom+bc.top), current.color, current.filled)).draw();
-		*/
+			x, y, current.color, current.filled)).draw();
 	}
 
 }

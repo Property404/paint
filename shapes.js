@@ -23,14 +23,14 @@ class Shape {
             cvertices.push(point[0], point[1], this.color.red, this.color.green, this.color.blue);
         }
 
-        console.log(cvertices);
+        //console.log(cvertices);
         /* Do all that WebGL magic */
         //gl.bindBuffer(gl.ARRAY_BUFFER, vertexBufferObject);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(cvertices), gl.STATIC_DRAW);
 
         /* Calculate how to draw the shape*/
         var vcount = Math.floor(points.length);
-        console.log("Vcount: " + vcount);
+        //console.log("Vcount: " + vcount);
         gl.drawArrays(gl_shape, 0, vcount);
 
     }
