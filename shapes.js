@@ -35,26 +35,27 @@ class Shape {
 
     }
 }
-class Triangle extends Shape{
-	constructor(x1, y1,x2, y2, color, filled, third_point){
-		super(x1, y1, x2,y2, color, filled);
-		this.x3 = third_point[0];
-		this.y3 = third_point[1];
-	}
-	draw(){
-		let x1 = this.x1;
-		let x2 = this.x2;
-		let x3 = this.x3;
-		let y1 = this.y1;
-		let y2 = this.y2;
-		let y3 = this.y3;
-		this.materialize([
-			[x1, y1],
-			[x2, y2],
-			[x3, y3]],
-			this.filled?gl.TRIANGLE_FAN:gl.LINE_LOOP
-		);
-	}
+class Triangle extends Shape {
+    constructor(x1, y1, x2, y2, color, filled, third_point) {
+        super(x1, y1, x2, y2, color, filled);
+        this.x3 = third_point[0];
+        this.y3 = third_point[1];
+    }
+    draw() {
+        let x1 = this.x1;
+        let x2 = this.x2;
+        let x3 = this.x3;
+        let y1 = this.y1;
+        let y2 = this.y2;
+        let y3 = this.y3;
+        this.materialize([
+                [x1, y1],
+                [x2, y2],
+                [x3, y3]
+            ],
+            this.filled ? gl.TRIANGLE_FAN : gl.LINE_LOOP
+        );
+    }
 }
 
 
@@ -93,36 +94,30 @@ class Rectangle extends Shape {
 }
 
 var tau = Math.PI * 2 /* Makes less calculations */
-class Circle extends Shape {
-	constructor(x1, y1, x2, y2, color, filled, dummy){
-		super(x1, y1, x2, y2, color, filled);
-		this.radius = Math.sqrt(
-			Math.pow(x2-x1,2)+
-			Math.pow(y2-y1,2));
-	}
-	draw(){
-		var vertices = [];
-		for(let i=0; i<=100;i++){
-			vertices.push([this.x1 + (this.radius * Math.cos(
-				i*tau/100)),
-				this.y1 + (this.radius * Math.sin(i*tau/100))]);
-		}
-		this.materialize(vertices, this.filled?gl.TRIANGLE_FAN:gl.LINE_LOOP);	
-	}
+class Polygon extends Shape {
+    constructor(x1, y1, x2, y2, color, filled, sides) {
+        super(x1, y1, x2, y2, color, filled);
+        this.radius = Math.sqrt(
+            Math.pow(x2 - x1, 2) +
+            Math.pow(y2 - y1, 2));
+	this.sides = sides;
+    }
+    draw() {
+        var vertices = [];
+	let multiplier = tau/this.sides;
+        for (let i = 0; i < this.sides; i++) {
+            vertices.push([
+                this.x1 + (this.radius * Math.cos(i*multiplier)),
+                this.y1 + (this.radius * Math.sin(i*multiplier))
+            ]);
+        }
+        this.materialize(vertices, this.filled ? gl.TRIANGLE_FAN : gl.LINE_LOOP);
+    }
 }
-/* Cause circles are just infinite-sided polygons, duh lol*/
-class Polygon extends Circle {
-	constructor(x1, y1, x2, y2, color, filled, sides){
-		super(x1, y1, x2, y2, color, filled, false);
-		this.sides = sides;
-	}
-	draw(){
-		var vertices = [];
-		for(let i=0; i<this.sides;i++){
-			vertices.push([
-				this.x1 + (this.radius * Math.cos(tau*i/this.sides)),
-				this.y1 + (this.radius * Math.sin(tau*i/this.sides))]);
-		}
-		this.materialize(vertices, this.filled?gl.TRIANGLE_FAN:gl.LINE_LOOP);
+
+/* Circles are just higher-level polygons */
+class Circle extends Polygon {
+	constructor(x1, y1, x2, y2, color, filled, dummy){
+		super(x1, y1, x2, y2, color, filled, 100);
 	}
 }

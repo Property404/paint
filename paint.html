@@ -18,14 +18,17 @@
 				</select>
 				<input type="number" value="5" min="3" max="128" id="sides">
 				<input type="color" id="color" value="#ffffff">
+				<input type="color" id="bgcolor" value="#000000" onchange="changeBackground()">
 				<input type="checkbox" id="fill">Fill</input>
-				<button id="undo">Undo</button>
+				<button id="pop">Pop</button>
 				<button id="clear">Clear</button>
 				<div class="col">
 			</div>
 			<div class="row">
+				<div class="col">
 				<canvas id="can" width="780" height="640">
 				</canvas>
+				<div class="col">
 			</div>
 		</div>
 		<script src="./graphics.js"></script>
