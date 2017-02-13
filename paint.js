@@ -11,6 +11,7 @@ var current = {
     "shape": Triangle,
     /* Fill or outline */
     "filled": true,
+    "focus": -1,
     /* For n-sided polygons only */
     "sides": 5,
     /* Fill/outline color */
@@ -45,6 +46,7 @@ current.bgcolor = hexToRgb(document.getElementById("bgcolor").value);
 setShape(document.getElementById("shape").value);
 current.filled = document.getElementById("fill").checked;
 current.sides = document.getElementById("sides").value;
+document.onkeydown = checkKey;
 
 /* Look for clicks */
 canvas.addEventListener('click', function(e) {
@@ -81,6 +83,7 @@ canvas.addEventListener('click', function(e) {
         current.origin_y = (1 - (e.offsetY / canvas.clientHeight)) * 2 - 1
         current.draw_mode = true;
     }
+	current.focus = shapes.length;
 });
 /* Cancel upon right click */
 canvas.addEventListener("contextmenu", function(e) {
@@ -159,11 +162,24 @@ function changeBackground() {
     current.bgcolor = hexToRgb(document.getElementById("bgcolor").value)
     redrawCanvas();
 }
-/*
-document.getElementById("color").addEventListener("click",function(e){
-	color = document.getElementById("color").value;
-	
-	current.color = hexToRgb(color);
-	console.log(current.color.red + "," + current.color.green + "," + current.color.blue);
-});
-*/
+
+// Arrow key stuff
+function checkKey(e){
+	e = e || window.event;
+	if(current.focus!=-1){
+	current.focus %= shapes.length;
+	let speed = .01;
+	if(e.keyCode == '38'/*Up arrow*/){
+		shapes[current.focus].y1 += speed;
+		shapes[current.focus].y2 += speed;
+	}else(e.keyCode == '40' /* Down arrow */){
+		shapes[current.focus].y1 -= .01;
+		shapes[current.focus].y2 -= .01;
+	}else(e.keyCode == '37'){
+		shapes[current.focus].x1 -= speed;
+		shapes[current.focus].x2 -= speed;
+	}
+	redrawCanvas();
+	}
+
+}

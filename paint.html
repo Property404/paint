@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link href="./thirdparty/bootstrap.min.css" rel="stylesheet">
+		<link href="./style.css" rel="stylesheet">
 	</head>
 	<body>
 		<div class="container">
@@ -17,8 +18,8 @@
 					<option value="polygon">Polygon</option>
 				</select>
 				<input type="number" value="5" min="3" max="100" id="sides">
-				<input type="color" id="color" value="#ffffff">
-				<input type="color" id="bgcolor" value="#000000" onchange="changeBackground()">
+				<input type="color" id="color" value="#000000">
+				<input type="color" id="bgcolor" value="#ffffff" onchange="changeBackground()">
 				<input type="checkbox" id="fill">Fill</input>
 				<button id="pop">Pop</button>
 				<button id="save" onclick="var img= document.getElementById('can').toDataURL('image/png');window.open(img);">Save</button>
