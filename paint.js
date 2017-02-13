@@ -15,7 +15,7 @@ var current = {
     "sides": 5,
     /* Fill/outline color */
     "color": new Color(1, 0, 0),
-    "bgcolor": new Color(0,0,0),
+    "bgcolor": new Color(0, 0, 0),
 
     /* Are we drawing? */
     "draw_mode": false,
@@ -53,19 +53,19 @@ canvas.addEventListener('click', function(e) {
     if (current.draw_mode) {
         // BECAUSE TRIANGLES ARE A BITCH AND A HALF THEY NEED THEIR OWN LOGIC
         if (current.shape === Triangle) {
-	    // Second click has no happened yet
+            // Second click has no happened yet
             if (!current.triangle_mode) {
                 current.triangle_mode = true;
                 current.triangle_point = [mousex, mousey]
             } else {
-	    // Second clck has happened :O
+                // Second clck has happened :O
                 current.draw_mode = false;
                 current.triangle_mode = false;
-		// Push a triangle in a complicated fashion
+                // Push a triangle in a complicated fashion
                 shapes.push(new current.shape(current.origin_x, current.origin_y, current.triangle_point[0], current.triangle_point[1], current.color, current.filled, [mousex, mousey]));
                 redrawCanvas();
             }
-	// Normal, god fearing shapes
+            // Normal, god fearing shapes
         } else {
             /* Turn draw mode off and draw shape */
             current.draw_mode = false;
@@ -154,7 +154,8 @@ document.getElementById("pop").addEventListener("click", function(e) {
     shapes.pop();
     redrawCanvas();
 });
-function changeBackground(){
+
+function changeBackground() {
     current.bgcolor = hexToRgb(document.getElementById("bgcolor").value)
     redrawCanvas();
 }

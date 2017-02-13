@@ -100,15 +100,15 @@ class Polygon extends Shape {
         this.radius = Math.sqrt(
             Math.pow(x2 - x1, 2) +
             Math.pow(y2 - y1, 2));
-	this.sides = sides;
+        this.sides = sides;
     }
     draw() {
         var vertices = [];
-	let multiplier = tau/this.sides;
+        let multiplier = tau / this.sides;
         for (let i = 0; i < this.sides; i++) {
             vertices.push([
-                this.x1 + (this.radius * Math.cos(i*multiplier)),
-                this.y1 + (this.radius * Math.sin(i*multiplier))
+                this.x1 + (this.radius * Math.cos(i * multiplier)),
+                this.y1 + (this.radius * Math.sin(i * multiplier))
             ]);
         }
         this.materialize(vertices, this.filled ? gl.TRIANGLE_FAN : gl.LINE_LOOP);
@@ -117,7 +117,7 @@ class Polygon extends Shape {
 
 /* Circles are just higher-level polygons */
 class Circle extends Polygon {
-	constructor(x1, y1, x2, y2, color, filled, dummy){
-		super(x1, y1, x2, y2, color, filled, 100);
-	}
+    constructor(x1, y1, x2, y2, color, filled, dummy) {
+        super(x1, y1, x2, y2, color, filled, 100);
+    }
 }
