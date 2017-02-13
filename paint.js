@@ -21,7 +21,7 @@ var current = {
     /* Are we drawing? */
     "draw_mode": false,
     "triangle_mode": false,
-    "pen_coordinates" : [],
+    "pen_coordinates": [],
 
     "origin_x": 0,
     "origin_y": 0
@@ -47,13 +47,13 @@ current.bgcolor = hexToRgb(document.getElementById("bgcolor").value);
 setShape(document.getElementById("shape").value);
 current.filled = document.getElementById("fill").checked;
 current.sides = document.getElementById("sides").value;
-document.onkeydown = checkKey;
+window.onkeydown = checkKey;
 
 /* Look for clicks */
 canvas.addEventListener('click', function(e) {
     /* Change color before drawing anything*/
     current.color = hexToRgb(document.getElementById("color").value);
-	if (current.draw_mode) {
+    if (current.draw_mode) {
         // BECAUSE TRIANGLES ARE A BITCH AND A HALF THEY NEED THEIR OWN LOGIC
         if (current.shape === Triangle) {
             // Second click has no happened yet
@@ -68,10 +68,13 @@ canvas.addEventListener('click', function(e) {
                 shapes.push(new current.shape(current.origin_x, current.origin_y, current.triangle_point[0], current.triangle_point[1], current.color, current.filled, [mousex, mousey]));
                 redrawCanvas();
             }
-	}else if(current.shape === Pen){
-		//Ugh, custom polygons
-		current.pen_coordinates.push([mousex, mousey]);
-            // Normal, god fearing shapes
+        } else if (current.shape === Pen) {
+            //Ugh, custom polygons
+            current.pen_coordinates.push([mousex, mousey]);
+	    redrawCanvas();
+            (new current.shape(current.origin_x, current.origin_y,
+                0, 0, current.color, current.filled, current.pen_coordinates)).draw();
+	// Normal, god fearing shapes
         } else {
             /* Turn draw mode off and draw shape */
             current.draw_mode = false;
@@ -83,7 +86,7 @@ canvas.addEventListener('click', function(e) {
 
         /* Turn draw mode on and record origin */
         triangle_mode = false;
-	current.pen_coordinates = []
+        current.pen_coordinates = []
         current.origin_x = (e.offsetX / canvas.clientWidth) * 2 - 1
         current.origin_y = (1 - (e.offsetY / canvas.clientHeight)) * 2 - 1
         current.draw_mode = true;
@@ -105,17 +108,14 @@ canvas.addEventListener("mousemove", function(e) {
         mousey = (1 - (e.offsetY / canvas.clientHeight)) * 2 - 1
         redrawCanvas();
         /* Cause triangles are bitches */
-    if (current.triangle_mode) {
+        if (current.triangle_mode) {
             (new current.shape(current.origin_x, current.origin_y, current.triangle_point[0], current.triangle_point[1],
                 current.color, current.filled, [mousex, mousey])).draw();
         } else {
             /* Normal, wholesome, god-fearing shapes */
-		if(current.shape===Pen){
-		//	console.log(current.pen_coordinates);
-		}
             (new current.shape(current.origin_x, current.origin_y,
-                mousex, mousey, current.color, current.filled, current.shape == Pen?
-		    current.pen_coordinates :current.shape == Polygon ? current.sides : [mousex, mousey])).draw();
+                mousex, mousey, current.color, current.filled, current.shape == Pen ?
+                current.pen_coordinates : current.shape == Polygon ? current.sides : [mousex, mousey])).draw();
         }
     }
 
@@ -142,7 +142,7 @@ function setShape(shape) {
         shape == "rectangle" ? Rectangle :
         shape == "circle" ? Circle :
         shape == "polygon" ? Polygon :
-	shape == "pen" ? Pen :
+        shape == "pen" ? Pen :
         (console.log("NO SUCH SHAPE"), Line);
 }
 document.getElementById("shape").addEventListener("click", function(e) {
@@ -178,46 +178,48 @@ function changeBackground() {
 // Arrow key stuff
 function checkKey(e) {
     e = e || window.event;
-    if(e.keyCode<=40){
-    e.preventDefault();
+    if (e.keyCode <= 40) {
+        e.preventDefault();
     }
     if (current.focus != -1) {
         current.focus %= shapes.length;
         let speed = .01;
-	/* Arrow keys control movement */
+        /* Arrow keys control movement */
         if (e.keyCode == '38' /*Up arrow*/ ) {
             shapes[current.focus].y1 += speed;
             shapes[current.focus].y2 += speed;
-        } else if(e.keyCode == '40' /* Down arrow */ ) {
+        } else if (e.keyCode == '40' /* Down arrow */ ) {
             shapes[current.focus].y1 -= .01;
             shapes[current.focus].y2 -= .01;
-        } else if(e.keyCode == '37'/*Left arrow*/) {
+        } else if (e.keyCode == '37' /*Left arrow*/ ) {
             shapes[current.focus].x1 -= speed;
             shapes[current.focus].x2 -= speed;
-        } else if (e.keyCode == '39'/*Right arrow*/){
-	    shapes[current.focus].x1 += speed;
-	    shapes[current.focus].x2 += speed;
-	} else if(e.keyCode== '9'/* Tab */) {
-	    // Change focus to new shape
-	    current.focus += 1;
-	} else if(e.keyCode == '8'/* Delete */) {
-	    // Delete shape
-	    shapes.splice(current.focus, 1);
-	} else if(e.keyCode ==  '16'/* Enter */){
-	    // Change outline of shape
-	    shapes[current.focus].outline = ! (shapes[current.focus].outline);
-	} else if (e.keyCode == '32'){
-		console.log("Hey");
-		if(current.shape == Pen && current.draw_mode == true){
-		console.log("What a wonderful kind of day");
-		(new current.shape(current.origin_x, current.origin_y,
-                mousex, mousey, current.color, current.filled, current.shape == Pen?
-		    current.pen_coordinates :current.shape == Polygon ? current.sides : [mousex, mousey])).draw();
-current.draw_mode = false;
-		}
-			
-	}
+        } else if (e.keyCode == '39' /*Right arrow*/ ) {
+            shapes[current.focus].x1 += speed;
+            shapes[current.focus].x2 += speed;
+        } else if (e.keyCode == '9' /* Tab */ ) {
+            // Change focus to new shape
+            current.focus += 1;
+        } else if (e.keyCode == '8' /* Delete */ ) {
+            // Delete shape
+            shapes.splice(current.focus, 1);
+        } else if (e.keyCode == '16' /* Enter */ ) {
+	    console.log("Oh");
+            // Change outline of shape
+            shapes[current.focus].outline = !(shapes[current.focus].outline);
+        }
+    }if (e.keyCode == '32') {
+            if (current.shape == Pen && current.draw_mode == true) {
+                console.log("What a wonderful kind of day");
+                shapes.push(new current.shape(current.origin_x, current.origin_y,
+                    mousex, mousey, current.color, current.filled, current.shape == Pen ?
+                    current.pen_coordinates : current.shape == Polygon ? current.sides : [mousex, mousey]));
+                current.draw_mode = false;
+		redrawCanvas();
+            }
+
+        }
         redrawCanvas();
-    }
+    
 
 }
