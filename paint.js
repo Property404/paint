@@ -229,6 +229,7 @@ function checkKey(e) {
                 current.polygon_coordinates : current.shape == Basic ? current.sides : [mousex, mousey]));
             current.draw_mode = false;
             redrawCanvas();
+            current.focus = shapes.length - 1;
         }
 
     }
