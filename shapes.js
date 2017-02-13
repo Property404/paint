@@ -91,3 +91,38 @@ class Rectangle extends Shape {
     }
 
 }
+
+var tau = Math.PI * 2 /* Makes less calculations */
+class Circle extends Shape {
+	constructor(x1, y1, x2, y2, color, filled, dummy){
+		super(x1, y1, x2, y2, color, filled);
+		this.radius = Math.sqrt(
+			Math.pow(x2-x1,2)+
+			Math.pow(y2-y1,2));
+	}
+	draw(){
+		var vertices = [];
+		for(let i=0; i<=100;i++){
+			vertices.push([this.x1 + (this.radius * Math.cos(
+				i*tau/100)),
+				this.y1 + (this.radius * Math.sin(i*tau/100))]);
+		}
+		this.materialize(vertices, this.filled?gl.TRIANGLE_FAN:gl.LINE_LOOP);	
+	}
+}
+/* Cause circles are just infinite-sided polygons, duh lol*/
+class Polygon extends Circle {
+	constructor(x1, y1, x2, y2, color, filled, sides){
+		super(x1, y1, x2, y2, color, filled, false);
+		this.sides = sides;
+	}
+	draw(){
+		var vertices = [];
+		for(let i=0; i<this.sides;i++){
+			vertices.push([
+				this.x1 + (this.radius * Math.cos(tau*i/this.sides)),
+				this.y1 + (this.radius * Math.sin(tau*i/this.sides))]);
+		}
+		this.materialize(vertices, this.filled?gl.TRIANGLE_FAN:gl.LINE_LOOP);
+	}
+}

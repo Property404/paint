@@ -85,18 +85,21 @@ canvas.addEventListener("contextmenu", function(e){
 	current.draw_mode = false;
 	redrawCanvas();
 });
-/* Look for moves if drawing */
+/* Look for moves if drawing 
+ * then redraw*/
 canvas.addEventListener("mousemove", function(e){
 	if(current.draw_mode){
 		mousex = (e.offsetX / canvas.clientWidth) * 2 -1
 		mousey = (1 - (e.offsetY / canvas.clientHeight))*2 - 1
 		redrawCanvas();
+		/* Cause triangles are bitches */
 		if(current.triangle_mode){
 			(new current.shape(current.origin_x, current.origin_y,current.triangle_point[0], current.triangle_point[1],
 				current.color, current.filled, [mousex, mousey])).draw();
 		}else{
+		/* Normal, wholesome, god-fearing shapes */
 		(new current.shape(current.origin_x, current.origin_y,
-			mousex, mousey, current.color, current.filled, [mousex, mousey])).draw();
+			mousex, mousey, current.color, current.filled, current.shape == Polygon ? current.sides : [mousex, mousey])).draw();
 	}
 	}
 
@@ -117,8 +120,12 @@ function hexToRgb(hex){
     throw new Error('Bad Hex');
 }
 function setShape(shape){
-	current.shape = shape=="triangle"?Triangle:shape=="line"?Line:
-		shape=="rectangle"?Rectangle:(console.log("NO SUCH SHAPE"),Line);
+	current.shape = shape=="triangle"?Triangle:
+		shape=="line"?Line:
+		shape=="rectangle"?Rectangle:
+		shape=="circle"?Circle:
+		shape=="polygon"?Polygon:
+		(console.log("NO SUCH SHAPE"),Line);
 }
 document.getElementById("shape").addEventListener("click", function(e){
 	shape = document.getElementById("shape").value
