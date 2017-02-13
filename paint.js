@@ -71,10 +71,10 @@ canvas.addEventListener('click', function(e) {
         } else if (current.shape === Polygon) {
             //Ugh, custom polygons
             current.polygon_coordinates.push([mousex, mousey]);
-	    redrawCanvas();
+            redrawCanvas();
             (new current.shape(current.origin_x, current.origin_y,
                 0, 0, current.color, current.filled, current.polygon_coordinates)).draw();
-	// Normal, god fearing shapes
+            // Normal, god fearing shapes
         } else {
             /* Turn draw mode off and draw shape */
             current.draw_mode = false;
@@ -140,7 +140,7 @@ function setShape(shape) {
         shape == "line" ? Line :
         shape == "rectangle" ? Rectangle :
         shape == "circle" ? Circle :
-        shape == "basic" ? Basic:
+        shape == "basic" ? Basic :
         shape == "polygon" ? Polygon :
         (console.log("NO SUCH SHAPE"), Line);
 }
@@ -179,7 +179,7 @@ function changeBackground() {
 // Arrow key stuff
 function checkKey(e) {
     e = e || window.event;
-    if (e.keyCode <= 40 || e.keycode >=188) {
+    if (e.keyCode <= 40 || e.keycode >= 188) {
         e.preventDefault();
     }
     if (current.focus != -1) {
@@ -207,31 +207,32 @@ function checkKey(e) {
         } else if (e.keyCode == '13' /* Enter */ ) {
             // Change outline of shape
             shapes[current.focus].filled = !(shapes[current.focus].filled);
-        }else if (e.keyCode == '188' /* comma */){
-	   // Swap to the left
-		let left = current.focus ? current.focus - 1 : shapes.length -1;
-		let temp = shapes[left]
-		   shapes[left] = shapes[current.focus];
-		   shapes[current.focus] = temp;
-		current.focus = left;
-	}else if (e.keyCode == '190' /* period */){
-		// Swap to the right
-		var temp = shapes [(current.focus + 1)%shapes.length]
-		shapes[(current.focus +1)%shapes.length] = shapes[current.focus];
-		shapes[current.focus] = temp;
-		current.focus = (current.focus + 1) % shapes.length;
-	}
-    }if (e.keyCode == '32') {
-            if (current.shape == Polygon && current.draw_mode == true) {
-                shapes.push(new current.shape(current.origin_x, current.origin_y,
-                    mousex, mousey, current.color, current.filled, current.shape == Polygon ?
-                    current.polygon_coordinates : current.shape == Basic ? current.sides : [mousex, mousey]));
-                current.draw_mode = false;
-		redrawCanvas();
-            }
-
+        } else if (e.keyCode == '188' /* comma */ ) {
+            // Swap to the left
+            let left = current.focus ? current.focus - 1 : shapes.length - 1;
+            let temp = shapes[left]
+            shapes[left] = shapes[current.focus];
+            shapes[current.focus] = temp;
+            current.focus = left;
+        } else if (e.keyCode == '190' /* period */ ) {
+            // Swap to the right
+            var temp = shapes[(current.focus + 1) % shapes.length]
+            shapes[(current.focus + 1) % shapes.length] = shapes[current.focus];
+            shapes[current.focus] = temp;
+            current.focus = (current.focus + 1) % shapes.length;
         }
-        redrawCanvas();
-    
+    }
+    if (e.keyCode == '32') {
+        if (current.shape == Polygon && current.draw_mode == true) {
+            shapes.push(new current.shape(current.origin_x, current.origin_y,
+                mousex, mousey, current.color, current.filled, current.shape == Polygon ?
+                current.polygon_coordinates : current.shape == Basic ? current.sides : [mousex, mousey]));
+            current.draw_mode = false;
+            redrawCanvas();
+        }
+
+    }
+    redrawCanvas();
+
 
 }

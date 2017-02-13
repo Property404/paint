@@ -1,6 +1,8 @@
 //init
 var canvas = document.getElementById("can");
-var gl = canvas.getContext("webgl", {preserveDrawingBuffer:true});
+var gl = canvas.getContext("webgl", {
+    preserveDrawingBuffer: true
+});
 var program;
 var vertexShader;
 var fragmentShader;

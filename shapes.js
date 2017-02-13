@@ -61,17 +61,19 @@ class Triangle extends Shape {
 
 /* Abnormal polygons */
 class Polygon extends Shape {
-	constructor(x1, y1, dummy, dummy2, color, filled, points){
-		super(x1,y1,0,0,color, filled);
-		this.points = points;
-	}
-	draw(){
-		var vertices = [[this.x1, this.y1]];
-		for(let point of this.points){
-			vertices.push(point);
-		};
-		this.materialize(vertices, this.filled?gl.TRIANGLE_FAN : gl.LINE_LOOP);
-	}
+    constructor(x1, y1, dummy, dummy2, color, filled, points) {
+        super(x1, y1, 0, 0, color, filled);
+        this.points = points;
+    }
+    draw() {
+        var vertices = [
+            [this.x1, this.y1]
+        ];
+        for (let point of this.points) {
+            vertices.push(point);
+        };
+        this.materialize(vertices, this.filled ? gl.TRIANGLE_FAN : gl.LINE_LOOP);
+    }
 }
 
 
@@ -133,7 +135,7 @@ class Basic extends Shape {
 }
 
 /* Circles are just higher-level basic shapes*/
-class Circle extends Basic{
+class Circle extends Basic {
     constructor(x1, y1, x2, y2, color, filled, dummy) {
         super(x1, y1, x2, y2, color, filled, 100);
     }
