@@ -41,6 +41,7 @@ redrawCanvas();
 current.color = hexToRgb(document.getElementById("color").value);
 setShape(document.getElementById("shape").value);
 current.filled = document.getElementById("fill").checked;
+current.sides = document.getElementById("sides").value;
 
 /* Look for clicks */
 canvas.addEventListener('click', function(e){
@@ -130,6 +131,10 @@ function setShape(shape){
 document.getElementById("shape").addEventListener("click", function(e){
 	shape = document.getElementById("shape").value
 	setShape(shape);
+});
+/* Polygon sides */
+document.getElementById("sides").addEventListener("click", function(e){
+	current.sides = document.getElementById("sides").value;
 });
 /* Fill or no fill? */
 document.getElementById("fill").addEventListener("click", function(e){
