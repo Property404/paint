@@ -57,10 +57,10 @@ class Triangle extends Shape {
         );
     }
 }
-// This will be what "Polygon" actually is
-// The internal Polygon will be "Simple" or "Simple Shape"
-// in order to reduce the amount of code-rewrite
-class Pen extends Shape {
+
+
+/* Abnormal polygons */
+class Polygon extends Shape {
 	constructor(x1, y1, dummy, dummy2, color, filled, points){
 		super(x1,y1,0,0,color, filled);
 		this.points = points;
@@ -110,7 +110,8 @@ class Rectangle extends Shape {
 }
 
 var tau = Math.PI * 2 /* Makes less calculations */
-class Polygon extends Shape {
+/* NORMAL Polygon */
+class Basic extends Shape {
     constructor(x1, y1, x2, y2, color, filled, sides) {
         super(x1, y1, x2, y2, color, filled);
         this.radius = Math.sqrt(
@@ -131,8 +132,8 @@ class Polygon extends Shape {
     }
 }
 
-/* Circles are just higher-level polygons */
-class Circle extends Polygon {
+/* Circles are just higher-level basic shapes*/
+class Circle extends Basic{
     constructor(x1, y1, x2, y2, color, filled, dummy) {
         super(x1, y1, x2, y2, color, filled, 100);
     }
