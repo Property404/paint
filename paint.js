@@ -21,6 +21,7 @@ var current = {
     /* Are we drawing? */
     "draw_mode": false,
     "triangle_mode": false,
+    "pen_coordinates" : [],
 
     "origin_x": 0,
     "origin_y": 0
@@ -52,7 +53,7 @@ document.onkeydown = checkKey;
 canvas.addEventListener('click', function(e) {
     /* Change color before drawing anything*/
     current.color = hexToRgb(document.getElementById("color").value);
-    if (current.draw_mode) {
+	if (current.draw_mode) {
         // BECAUSE TRIANGLES ARE A BITCH AND A HALF THEY NEED THEIR OWN LOGIC
         if (current.shape === Triangle) {
             // Second click has no happened yet
@@ -67,6 +68,9 @@ canvas.addEventListener('click', function(e) {
                 shapes.push(new current.shape(current.origin_x, current.origin_y, current.triangle_point[0], current.triangle_point[1], current.color, current.filled, [mousex, mousey]));
                 redrawCanvas();
             }
+	}else if(current.shape === Pen){
+		//Ugh, custom polygons
+		current.pen_coordinates.push([mousex, mousey]);
             // Normal, god fearing shapes
         } else {
             /* Turn draw mode off and draw shape */
@@ -79,6 +83,7 @@ canvas.addEventListener('click', function(e) {
 
         /* Turn draw mode on and record origin */
         triangle_mode = false;
+	current.pen_coordinates = []
         current.origin_x = (e.offsetX / canvas.clientWidth) * 2 - 1
         current.origin_y = (1 - (e.offsetY / canvas.clientHeight)) * 2 - 1
         current.draw_mode = true;
@@ -100,13 +105,17 @@ canvas.addEventListener("mousemove", function(e) {
         mousey = (1 - (e.offsetY / canvas.clientHeight)) * 2 - 1
         redrawCanvas();
         /* Cause triangles are bitches */
-        if (current.triangle_mode) {
+    if (current.triangle_mode) {
             (new current.shape(current.origin_x, current.origin_y, current.triangle_point[0], current.triangle_point[1],
                 current.color, current.filled, [mousex, mousey])).draw();
         } else {
             /* Normal, wholesome, god-fearing shapes */
+		if(current.shape===Pen){
+		//	console.log(current.pen_coordinates);
+		}
             (new current.shape(current.origin_x, current.origin_y,
-                mousex, mousey, current.color, current.filled, current.shape == Polygon ? current.sides : [mousex, mousey])).draw();
+                mousex, mousey, current.color, current.filled, current.shape == Pen?
+		    current.pen_coordinates :current.shape == Polygon ? current.sides : [mousex, mousey])).draw();
         }
     }
 
@@ -133,6 +142,7 @@ function setShape(shape) {
         shape == "rectangle" ? Rectangle :
         shape == "circle" ? Circle :
         shape == "polygon" ? Polygon :
+	shape == "pen" ? Pen :
         (console.log("NO SUCH SHAPE"), Line);
 }
 document.getElementById("shape").addEventListener("click", function(e) {
@@ -196,6 +206,16 @@ function checkKey(e) {
 	} else if(e.keyCode ==  '16'/* Enter */){
 	    // Change outline of shape
 	    shapes[current.focus].outline = ! (shapes[current.focus].outline);
+	} else if (e.keyCode == '32'){
+		console.log("Hey");
+		if(current.shape == Pen && current.draw_mode == true){
+		console.log("What a wonderful kind of day");
+		(new current.shape(current.origin_x, current.origin_y,
+                mousex, mousey, current.color, current.filled, current.shape == Pen?
+		    current.pen_coordinates :current.shape == Polygon ? current.sides : [mousex, mousey])).draw();
+current.draw_mode = false;
+		}
+			
 	}
         redrawCanvas();
     }

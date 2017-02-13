@@ -57,6 +57,22 @@ class Triangle extends Shape {
         );
     }
 }
+// This will be what "Polygon" actually is
+// The internal Polygon will be "Simple" or "Simple Shape"
+// in order to reduce the amount of code-rewrite
+class Pen extends Shape {
+	constructor(x1, y1, dummy, dummy2, color, filled, points){
+		super(x1,y1,0,0,color, filled);
+		this.points = points;
+	}
+	draw(){
+		var vertices = [[this.x1, this.y1]];
+		for(let point of this.points){
+			vertices.push(point);
+		};
+		this.materialize(vertices, this.filled?gl.TRIANGLE_FAN : gl.LINE_LOOP);
+	}
+}
 
 
 class Line extends Shape {
