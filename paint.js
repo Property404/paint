@@ -83,7 +83,7 @@ canvas.addEventListener('click', function(e) {
         current.origin_y = (1 - (e.offsetY / canvas.clientHeight)) * 2 - 1
         current.draw_mode = true;
     }
-	current.focus = shapes.length;
+    current.focus = shapes.length - 1;
 });
 /* Cancel upon right click */
 canvas.addEventListener("contextmenu", function(e) {
@@ -150,11 +150,13 @@ document.getElementById("fill").addEventListener("click", function(e) {
 /* Clear */
 document.getElementById("clear").addEventListener("click", function(e) {
     shapes = [];
+    current.focus = -1
     redrawCanvas();
 });
 // Pop last shape
 document.getElementById("pop").addEventListener("click", function(e) {
     shapes.pop();
+    current.focus = shapes.length - 1
     redrawCanvas();
 });
 
@@ -164,22 +166,38 @@ function changeBackground() {
 }
 
 // Arrow key stuff
-function checkKey(e){
-	e = e || window.event;
-	if(current.focus!=-1){
-	current.focus %= shapes.length;
-	let speed = .01;
-	if(e.keyCode == '38'/*Up arrow*/){
-		shapes[current.focus].y1 += speed;
-		shapes[current.focus].y2 += speed;
-	}else(e.keyCode == '40' /* Down arrow */){
-		shapes[current.focus].y1 -= .01;
-		shapes[current.focus].y2 -= .01;
-	}else(e.keyCode == '37'){
-		shapes[current.focus].x1 -= speed;
-		shapes[current.focus].x2 -= speed;
+function checkKey(e) {
+    e = e || window.event;
+    if(e.keyCode<=40){
+    e.preventDefault();
+    }
+    if (current.focus != -1) {
+        current.focus %= shapes.length;
+        let speed = .01;
+	/* Arrow keys control movement */
+        if (e.keyCode == '38' /*Up arrow*/ ) {
+            shapes[current.focus].y1 += speed;
+            shapes[current.focus].y2 += speed;
+        } else if(e.keyCode == '40' /* Down arrow */ ) {
+            shapes[current.focus].y1 -= .01;
+            shapes[current.focus].y2 -= .01;
+        } else if(e.keyCode == '37'/*Left arrow*/) {
+            shapes[current.focus].x1 -= speed;
+            shapes[current.focus].x2 -= speed;
+        } else if (e.keyCode == '39'/*Right arrow*/){
+	    shapes[current.focus].x1 += speed;
+	    shapes[current.focus].x2 += speed;
+	} else if(e.keyCode== '9'/* Tab */) {
+	    // Change focus to new shape
+	    current.focus += 1;
+	} else if(e.keyCode == '8'/* Delete */) {
+	    // Delete shape
+	    shapes.splice(current.focus, 1);
+	} else if(e.keyCode ==  '16'/* Enter */){
+	    // Change outline of shape
+	    shapes[current.focus].outline = ! (shapes[current.focus].outline);
 	}
-	redrawCanvas();
-	}
+        redrawCanvas();
+    }
 
 }
