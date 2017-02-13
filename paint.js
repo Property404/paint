@@ -37,9 +37,15 @@ function redrawCanvas(){
 
 /* Okay, might as well do that once before anything else */
 redrawCanvas();
+/* And do the other setups*/
+current.color = hexToRgb(document.getElementById("color").value);
+setShape(document.getElementById("shape").value);
+current.filled = document.getElementById("fill").checked;
 
 /* Look for clicks */
 canvas.addEventListener('click', function(e){
+		/* Change color */
+		current.color = hexToRgb(document.getElementById("color").value);
 	if(current.draw_mode){
 		// BECAUSE TRIANGLES ARE A BITCH AND A HALF THEY NEED THEIR OWN LOGIC
 		if(current.shape === Triangle){
@@ -96,3 +102,46 @@ canvas.addEventListener("mousemove", function(e){
 
 }
 );
+
+/* Toolbox code */
+function hexToRgb(hex){
+    var c;
+    if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+        c= hex.substring(1).split('');
+        if(c.length== 3){
+            c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+        }
+        c= '0x'+c.join('');
+	return new Color(((c>>16)&255)/255.0, ((c>>8)&255)/255.0, (c&255)/255.0)
+    }
+    throw new Error('Bad Hex');
+}
+function setShape(shape){
+	current.shape = shape=="triangle"?Triangle:shape=="line"?Line:
+		shape=="rectangle"?Rectangle:(console.log("NO SUCH SHAPE"),Line);
+}
+document.getElementById("shape").addEventListener("click", function(e){
+	shape = document.getElementById("shape").value
+	setShape(shape);
+});
+/* Fill or no fill? */
+document.getElementById("fill").addEventListener("click", function(e){
+	current.filled = document.getElementById("fill").checked;
+});
+/* Clear */
+document.getElementById("clear").addEventListener("click", function(e){
+	shapes = [];
+	redrawCanvas();
+});
+document.getElementById("undo").addEventListener("click",function(e){
+	shapes.pop();
+	redrawCanvas();
+});
+/*
+document.getElementById("color").addEventListener("click",function(e){
+	color = document.getElementById("color").value;
+	
+	current.color = hexToRgb(color);
+	console.log(current.color.red + "," + current.color.green + "," + current.color.blue);
+});
+*/
