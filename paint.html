@@ -14,15 +14,16 @@
 					<option value="rectangle">Rectangle</option>
 					<option value="line">Line</option>
 					<option value="circle">Circle</option>
-					<option value="polygon">N-sided Polygon</option>
+					<option value="polygon">Polygon</option>
 				</select>
-				<input type="number" value="5" min="3" max="128" id="sides">
+				<input type="number" value="5" min="3" max="100" id="sides">
 				<input type="color" id="color" value="#ffffff">
 				<input type="color" id="bgcolor" value="#000000" onchange="changeBackground()">
 				<input type="checkbox" id="fill">Fill</input>
 				<button id="pop">Pop</button>
+				<button id="save" onclick="var img= document.getElementById('can').toDataURL('image/png');window.open(img);">Save</button>
 				<button id="clear">Clear</button>
-				<div class="col">
+				</div>
 			</div>
 			<div class="row">
 				<div class="col">
