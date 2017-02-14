@@ -204,6 +204,7 @@ function checkKey(e) {
         } else if (e.keyCode == '8' /* Delete */ ) {
             // Delete shape
             shapes.splice(current.focus, 1);
+            current.focus -= 1;
         } else if (e.keyCode == '13' /* Enter */ ) {
             // Change outline of shape
             shapes[current.focus].filled = !(shapes[current.focus].filled);
