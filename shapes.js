@@ -1,3 +1,4 @@
+// Just an RGB value as a class
 class Color {
     constructor(r, g, b) {
         this.red = r;
@@ -5,6 +6,8 @@ class Color {
         this.blue = b;
     }
 }
+
+// Abstract shape superclass
 class Shape {
     constructor(x1, y1, x2, y2, color, filled, extraparam = false) {
         this.x1 = x1;
@@ -13,7 +16,7 @@ class Shape {
         this.y2 = y2;
         this.color = color;
         //Assert filled is exactly true or exactly false
-        this.filled = filled === true ? true : filled === false ? false : (console.log("NOT A VALID FILLED CONDITION"), false);
+        this.filled = (filled === true || filled === false) ? filled : (console.log("NOT A VALID FILLED CONDITION"), false);
     }
 
     materialize(points /* Does NOT include color*/ , gl_shape) {
@@ -23,9 +26,7 @@ class Shape {
             cvertices.push(point[0], point[1], this.color.red, this.color.green, this.color.blue);
         }
 
-        //console.log(cvertices);
         /* Do all that WebGL magic */
-        //gl.bindBuffer(gl.ARRAY_BUFFER, vertexBufferObject);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(cvertices), gl.STATIC_DRAW);
 
         /* Calculate how to draw the shape*/
@@ -35,6 +36,8 @@ class Shape {
 
     }
 }
+
+// Has an extra 3rd coord
 class Triangle extends Shape {
     constructor(x1, y1, x2, y2, color, filled, third_point) {
         super(x1, y1, x2, y2, color, filled);
@@ -92,6 +95,7 @@ class Line extends Shape {
         ], gl.LINE_STRIP);
     }
 }
+
 class Rectangle extends Shape {
     constructor(x1, y1, x2, y2, color, filled, dummy) {
         super(x1, y1, x2, y2, color, filled);
@@ -112,7 +116,7 @@ class Rectangle extends Shape {
 }
 
 var tau = Math.PI * 2 /* Makes less calculations */
-/* NORMAL Polygon */
+/* NORMAL (regular) Polygon */
 class Basic extends Shape {
     constructor(x1, y1, x2, y2, color, filled, sides) {
         super(x1, y1, x2, y2, color, filled);
