@@ -38,9 +38,9 @@ function redrawCanvas() {
 }
 
 // Get mouse coords
-function recordMouse(e){
-	mousex = (e.offsetX / canvas.clientWidth) * 2 - 1
-        mousey = (1 - (e.offsetY / canvas.clientHeight)) * 2 - 1
+function recordMouse(e) {
+    mousex = (e.offsetX / canvas.clientWidth) * 2 - 1
+    mousey = (1 - (e.offsetY / canvas.clientHeight)) * 2 - 1
 }
 
 /* Okay, might as well do that once before anything else */
@@ -90,7 +90,7 @@ canvas.addEventListener('click', function(e) {
         /* Turn draw mode on and record origin */
         triangle_mode = false;
         current.polygon_coordinates = []
-	recordMouse(e);
+        recordMouse(e);
         current.origin_x = mousex;
         current.origin_y = mousey;
         current.draw_mode = true;
@@ -99,18 +99,18 @@ canvas.addEventListener('click', function(e) {
 });
 /* Cancel upon right click */
 canvas.addEventListener("contextmenu", function(e) {
-    if(current.draw_mode){
-	    e.preventDefault();
- 	   triangle_mode = false;
- 	   current.draw_mode = false;
- 	   redrawCanvas();
-	}    
+    if (current.draw_mode) {
+        e.preventDefault();
+        triangle_mode = false;
+        current.draw_mode = false;
+        redrawCanvas();
+    }
 });
 /* Look for moves if drawing 
  * then redraw*/
 canvas.addEventListener("mousemove", function(e) {
     if (current.draw_mode) {
-	recordMouse(e);
+        recordMouse(e);
         redrawCanvas();
         /* Cause triangles are bitches */
         if (current.triangle_mode) {
@@ -120,7 +120,9 @@ canvas.addEventListener("mousemove", function(e) {
             /* Normal, wholesome, god-fearing shapes */
             (new current.shape(current.origin_x, current.origin_y,
                 mousex, mousey, current.color, current.filled, current.shape == Polygon ?
-                current.polygon_coordinates.concat([[mousex,mousey]]) : current.shape == Basic ? current.sides : [mousex, mousey])).draw();
+                current.polygon_coordinates.concat([
+                    [mousex, mousey]
+                ]) : current.shape == Basic ? current.sides : [mousex, mousey])).draw();
         }
     }
 
@@ -229,8 +231,8 @@ function checkKey(e) {
             current.focus = (current.focus + 1) % shapes.length;
         }
     }
-    if (e.keyCode == '32') {//Space
-	// Stop draw'n polygon
+    if (e.keyCode == '32') { //Space
+        // Stop draw'n polygon
         if (current.shape == Polygon && current.draw_mode == true) {
             shapes.push(new current.shape(current.origin_x, current.origin_y,
                 mousex, mousey, current.color, current.filled, current.shape == Polygon ?
