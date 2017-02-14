@@ -27,8 +27,6 @@ var current = {
     "origin_y": 0
 
 }
-// bc - bounding client
-var bc = canvas.getBoundingClientRect();
 
 /* Clear and redraw */
 function redrawCanvas() {
@@ -94,10 +92,12 @@ canvas.addEventListener('click', function(e) {
 });
 /* Cancel upon right click */
 canvas.addEventListener("contextmenu", function(e) {
-    e.preventDefault();
-    triangle_mode = false;
-    current.draw_mode = false;
-    redrawCanvas();
+    if(current.draw_mode){
+	    e.preventDefault();
+ 	   triangle_mode = false;
+ 	   current.draw_mode = false;
+ 	   redrawCanvas();
+	}    
 });
 /* Look for moves if drawing 
  * then redraw*/
@@ -114,7 +114,7 @@ canvas.addEventListener("mousemove", function(e) {
             /* Normal, wholesome, god-fearing shapes */
             (new current.shape(current.origin_x, current.origin_y,
                 mousex, mousey, current.color, current.filled, current.shape == Polygon ?
-                current.polygon_coordinates : current.shape == Basic ? current.sides : [mousex, mousey])).draw();
+                current.polygon_coordinates.concat([[mousex,mousey]]) : current.shape == Basic ? current.sides : [mousex, mousey])).draw();
         }
     }
 
@@ -223,7 +223,8 @@ function checkKey(e) {
             current.focus = (current.focus + 1) % shapes.length;
         }
     }
-    if (e.keyCode == '32') {
+    if (e.keyCode == '32') {//Space
+	// Stop draw'n polygon
         if (current.shape == Polygon && current.draw_mode == true) {
             shapes.push(new current.shape(current.origin_x, current.origin_y,
                 mousex, mousey, current.color, current.filled, current.shape == Polygon ?
