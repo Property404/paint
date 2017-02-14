@@ -37,6 +37,12 @@ function redrawCanvas() {
     }
 }
 
+// Get mouse coords
+function recordMouse(e){
+	mousex = (e.offsetX / canvas.clientWidth) * 2 - 1
+        mousey = (1 - (e.offsetY / canvas.clientHeight)) * 2 - 1
+}
+
 /* Okay, might as well do that once before anything else */
 redrawCanvas();
 /* And do the other setups*/
@@ -84,8 +90,9 @@ canvas.addEventListener('click', function(e) {
         /* Turn draw mode on and record origin */
         triangle_mode = false;
         current.polygon_coordinates = []
-        current.origin_x = (e.offsetX / canvas.clientWidth) * 2 - 1
-        current.origin_y = (1 - (e.offsetY / canvas.clientHeight)) * 2 - 1
+	recordMouse(e);
+        current.origin_x = mousex;
+        current.origin_y = mousey;
         current.draw_mode = true;
     }
     current.focus = shapes.length - 1;
@@ -103,8 +110,7 @@ canvas.addEventListener("contextmenu", function(e) {
  * then redraw*/
 canvas.addEventListener("mousemove", function(e) {
     if (current.draw_mode) {
-        mousex = (e.offsetX / canvas.clientWidth) * 2 - 1
-        mousey = (1 - (e.offsetY / canvas.clientHeight)) * 2 - 1
+	recordMouse(e);
         redrawCanvas();
         /* Cause triangles are bitches */
         if (current.triangle_mode) {
@@ -236,6 +242,4 @@ function checkKey(e) {
 
     }
     redrawCanvas();
-
-
 }
