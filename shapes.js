@@ -15,7 +15,7 @@ class Shape {
         this.y1 = y1;
         this.y2 = y2;
         this.color = color;
-	this.theta = false;
+        this.theta = false;
         //Assert filled is exactly true or exactly false
         this.filled = (filled === true || filled === false) ? filled : (console.log("NOT A VALID FILLED CONDITION"), false);
     }
@@ -119,13 +119,13 @@ class Rectangle extends Shape {
 var tau = Math.PI * 2 /* Makes less calculations */
 /* NORMAL (regular) Polygon */
 class Basic extends Shape {
-    constructor(x1, y1, x2, y2, color, filled, extra/*Array of sides and theta */) {
+    constructor(x1, y1, x2, y2, color, filled, extra /*Array of sides and theta */ ) {
         super(x1, y1, x2, y2, color, filled);
         this.radius = Math.sqrt(
             Math.pow(x2 - x1, 2) +
             Math.pow(y2 - y1, 2));
         this.sides = extra[0];
-	this.theta = extra[1];
+        this.theta = extra[1];
     }
     draw() {
         var vertices = [];
