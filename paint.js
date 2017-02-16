@@ -83,7 +83,7 @@ canvas.addEventListener('click', function(e) {
         } else {
             /* Turn draw mode off and draw shape */
             current.draw_mode = false;
-            shapes.push(new current.shape(current.origin_x, current.origin_y, mousex, mousey, current.color, current.filled, [current.sides, 0]));
+            shapes.push(new current.shape(current.origin_x, current.origin_y, mousex, mousey, current.color, current.filled, current.sides));
             redrawCanvas();
         }
     } else {
@@ -123,7 +123,7 @@ canvas.addEventListener("mousemove", function(e) {
                 mousex, mousey, current.color, current.filled, current.shape == Polygon ?
                 current.polygon_coordinates.concat([
                     [mousex, mousey]
-                ]) : current.shape == Basic ? [current.sides, 0] : [mousex, mousey])).draw();
+                ]) : current.shape == Basic ? current.sides : [mousex, mousey])).draw();
         }
     }
 
@@ -247,7 +247,7 @@ function checkKey(e) {
         if (current.shape == Polygon && current.draw_mode == true) {
             shapes.push(new current.shape(current.origin_x, current.origin_y,
                 mousex, mousey, current.color, current.filled, current.shape == Polygon ?
-                current.polygon_coordinates : current.shape == Basic ? [current.sides, 0] : [mousex, mousey]));
+                current.polygon_coordinates : current.shape == Basic ? current.sides : [mousex, mousey]));
             current.draw_mode = false;
             redrawCanvas();
             current.focus = shapes.length - 1;
