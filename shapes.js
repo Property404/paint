@@ -143,6 +143,6 @@ class Basic extends Shape {
 /* Circles are just higher-level basic shapes*/
 class Circle extends Basic {
     constructor(x1, y1, x2, y2, color, filled, dummy) {
-        super(x1, y1, x2, y2, color, filled, [100, 0]);
+        super(x1, y1, x2, y2, color, filled, 100);
     }
 }
